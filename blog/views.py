@@ -1,14 +1,8 @@
-from django. shortcuts import render
+from django.shortcuts import render
 from django.http import HttpResponse
-
-def portao(request):
-    return HttpResponse("voce chegou ao portão da casa")
-
-def sala(request):
-    return HttpResponse(' voce chepou na sala. Senta no sofa')
-
-def quarto(request):
-    return HttpResponse("Agora está no quarto, pode se deitar")
+from django.utils import timezone
+from .models import Post
 
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'blog/post_list.html', {"posts": posts})
